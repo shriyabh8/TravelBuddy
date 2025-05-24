@@ -38,7 +38,7 @@ function HomePage() {
           "
           onClick={goToAboutPage}
         >
-          take survey
+          take survey &rarr;
         </button>
       </div>
     </div>
