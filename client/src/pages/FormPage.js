@@ -77,10 +77,6 @@ function FormPage() {
         </div>
 
         <div className="space-y-2">
-<<<<<<< HEAD
-          <label className="block text-lg font-open-sans text-[#383a32]">
-            Please enter any other information you want us to integrate into your itinerary.
-=======
         <label className="block text-lg font-normal text-gray-800">
             How many people are going?
           </label>
@@ -96,7 +92,6 @@ function FormPage() {
         <div className="space-y-2">
           <label className="block text-lg font-normal text-gray-800">
             Please enter any other information you want us to integrate into your itinerary!
->>>>>>> secondstream
           </label>
           <textarea
             rows="5"
