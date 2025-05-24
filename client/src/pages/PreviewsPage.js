@@ -12,23 +12,26 @@ function OptionsPage() {
   return (
     <div className="p-6 flex flex-col items-center ml-8">
       <div className="w-full flex justify-start">
-      <button
-          onClick={() => navigate('/form')}
-          className="justify-left text-[#383a32] font-open-sans underline hover:font-bold mb-3 block"
-        >
-          ← Edit Survey
-        </button>
-      <div className="flex flex-row gap-4 mb-6">
-        <div>
+        <button
+            onClick={() => navigate(-1)}
+            className="justify-left text-[#383a32] font-open-sans underline hover:font-bold mb-3 block"
+          >
+            ← Edit Survey
+          </button>
+      </div>
+      
+      <div className="flex flex-row gap-10 mb-10">
+        <div className="flex flex-col items-center">
         <Preview itinerary_key={0} />
         <button
-        onClick={Regenerate(0)}className="px-6 py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-open-sans font-bold text-lg rounded-xl shadow-md transition duration-200"className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
+        onClick={Regenerate(0)}
+        className="px-6 py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-open-sans font-bold text-lg rounded-xl shadow-md transition duration-200"
       >
         Regenerate
       </button>
       </div>
         
-      <div>
+      <div className="flex flex-col items-center">
         <Preview itinerary_key={1} />
         <button
         onClick={Regenerate(1)}
@@ -37,7 +40,7 @@ function OptionsPage() {
         Regenerate
       </button>
       </div>
-      <div>
+      <div className="flex flex-col items-center">
         <Preview itinerary_key={2} />
         <button
         onClick={Regenerate(2)}
@@ -47,8 +50,8 @@ function OptionsPage() {
       </button>
       </div>
       </div>
-    </div>
+      </div>
   );
-}
+};
 
 export default OptionsPage;
