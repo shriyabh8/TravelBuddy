@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function FormPage() {
   const [location, setLocation] = useState('');
   const [dates, setDates] = useState('');
+  const [people, setPeople] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
 
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function FormPage() {
     const formData = {
       location,
       dates,
+      people,
       additionalInfo,
     };
 
@@ -31,6 +33,7 @@ function FormPage() {
       }
       const result = await response.json();
       console.log('Submission successful:', result);
+
       navigate('/options');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -67,6 +70,19 @@ function FormPage() {
             placeholder="Enter the start and end date"
             value={dates}
             onChange={(e) => setDates(e.target.value)}
+            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
+          />
+        </div>
+
+        <div className="space-y-2">
+        <label className="block text-lg font-normal text-gray-800">
+            How many people are going?
+          </label>
+          <input
+            type="text"
+            placeholder="Enter the number of people"
+            value={people}
+            onChange={(e) => setPeople(e.target.value)}
             className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>

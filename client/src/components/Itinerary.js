@@ -9,7 +9,7 @@ const DetailPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/data");
+        const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
         if (id >= 0 && id < data.length) {
           setItem(data[id]);
