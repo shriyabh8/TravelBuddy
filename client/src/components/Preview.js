@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const JsonFromServer = () => {
+const Preview = ({itinerary_key}) => {
   const [allData, setAllData] = useState([]);
   const navigate = useNavigate();
 
@@ -10,15 +10,15 @@ const JsonFromServer = () => {
       try {
         const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
-        const lastItem = Array.isArray(data) ? data[data.length - 1] : null;
-        setAllData(lastItem ? [lastItem] : []);
+        const item = Array.isArray(data) ? data[itinerary_key] : null;
+        setAllData(item ? [item] : []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
   
     fetchData();
-  }, []);
+  }, [itinerary_key]);
 
   
   const renderPreview = (obj) => {
@@ -50,10 +50,9 @@ const JsonFromServer = () => {
           {allData.map((item, index) => (
             <div
               key={index}
-              onClick={() => navigate(`/itinerary/${index}`)}
+              onClick={() => navigate(`/itinerary/${itinerary_key}`)}
               className="cursor-pointer mb-4 hover:bg-gray-50 p-2 rounded transition"
             >
-              <div className="text-sm text-gray-500 mb-1">Item #{index + 1}</div>
               {renderPreview(item)}
             </div>
           ))}
@@ -63,4 +62,4 @@ const JsonFromServer = () => {
   );
 };
 
-export default JsonFromServer;
+export default Preview;

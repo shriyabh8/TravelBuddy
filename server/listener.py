@@ -2,26 +2,22 @@ import json
 
 def main():
     try:
+        last_line = None
         with open('form-data.txt', 'r') as f_in:
-            lines = f_in.readlines()
+            for line in f_in:
+                last_line = line.strip()
 
-        processed_data = []
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
+        if last_line:
             try:
-                data = json.loads(line)
-                # Here you can modify 'data' if you want before saving
-                processed_data.append(data)
-            except json.JSONDecodeError:
-                # Handle invalid JSON line if needed
-                continue
+                data = json.loads(last_line)
+                with open('itinerary-data.txt', 'w') as f_out:
+                    #mock data
+                    f_out.write('{"location": "1", "dates": "2", "people": "3", "additionalInfo": "4"}\n')
+                    f_out.write('{"location": "5", "dates": "6", "people": "7", "additionalInfo": "8"}\n')
+                    f_out.write('{"location": "9", "dates": "0", "people": "1", "additionalInfo": "2"}\n')
 
-        with open('itinerary-data.txt', 'w') as f_out:
-            for item in processed_data:
-                json.dump(item, f_out)
-                f_out.write('\n')
+            except json.JSONDecodeError:
+                pass
 
     except Exception as e:
         print(f"Error processing data: {e}")

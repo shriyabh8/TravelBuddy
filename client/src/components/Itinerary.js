@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const DetailPage = () => {
-  const { id } = useParams();
-  const [item, setItem] = useState(null);
+const Itinerary = ({itinerary_key}) => {
+  const [allData, setAllData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,57 +10,64 @@ const DetailPage = () => {
       try {
         const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
-        if (id >= 0 && id < data.length) {
-          setItem(data[id]);
-        } else {
-          setItem(null);
-        }
+        const item = Array.isArray(data) ? data[itinerary_key] : null;
+        setAllData(item ? [item] : []);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setItem(null);
       }
     };
-
+  
     fetchData();
-  }, [id]);
+  }, [itinerary_key]);
 
-  const renderField = (label, value) => (
-    <div className="mb-4">
-      <h3 className="text-lg font-semibold text-gray-700 mb-1 capitalize">{label}</h3>
-      <p className="text-gray-800 bg-gray-50 rounded-lg px-4 py-2 border border-gray-200">{value || "—"}</p>
-    </div>
-  );
+  
+  const renderPreview = (obj) => {
+    if (!obj) return null;
+    const entries = Object.entries(obj).slice(0, 4);
+    return entries.map(([key, value]) => {
+      let displayValue;
+      if (typeof value === "object" && value !== null) {
+        const strVal = JSON.stringify(value);
+        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
+      } else {
+        const strVal = String(value);
+        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
+      }
+      return (
+        <div key={key} className="mb-1">
+          <strong className="capitalize text-indigo-700">{key}:</strong> {displayValue}
+        </div>
+      );
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-3xl mx-auto">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-indigo-600 hover:underline mb-6 block"
-        >
-          ← Back To Previews
-        </button>
+    <div className="p-4 max-w-3xl mx-auto">
+      <button
+    onClick={() => navigate(-1)}
+    className="text-indigo-600 hover:underline mb-6 block"
+  >
+    ← Back To Previews
+  </button>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Trip Details</h1>
-
-          {item ? (
-            <div className="space-y-6">
-              {Object.entries(item).map(([key, value]) => {
-                const displayValue =
-                  typeof value === "object"
-                    ? JSON.stringify(value, null, 2)
-                    : String(value);
-                return renderField(key, displayValue);
-              })}
+  <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+    <h1 className="text-3xl font-bold text-gray-800 mb-6">Trip Details</h1>
+      {allData.length === 0 ? (
+        <p className="italic text-gray-500">No data available.</p>
+      ) : (
+          allData.map((item, index) => (
+            <div
+              key={index}
+              className="cursor-pointer mb-4 hover:bg-gray-50 p-2 rounded transition"
+            >
+              {renderPreview(item)}
             </div>
-          ) : (
-            <p className="italic text-red-500">No data found for this item.</p>
-          )}
-        </div>
-      </div>
+          ))
+      )}
     </div>
+  </div>
+
   );
 };
 
-export default DetailPage;
+export default Itinerary;
