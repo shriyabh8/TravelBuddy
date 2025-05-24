@@ -1,12 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Itinerary from '../components/Itinerary';
+import { useParams } from 'react-router-dom';
 
 function ItineraryPage() {
+  const { id } = useParams();
 
   return (
     <div>
-      <Itinerary />
+      <Itinerary itinerary_key={id} />
     </div>
   );
 }

@@ -35,7 +35,7 @@ function FormPage() {
       const result = await response.json();
       console.log('Submission successful:', result);
 
-      navigate('/options');
+      navigate('/previews');
     } catch (error) {
       console.error('Error submitting form:', error);
     }

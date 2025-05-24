@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FormPage from './pages/FormPage';
 import OptionsPage from './pages/PreviewsPage';
@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/form" element={<FormPage />} />
-          <Route path="/options" element={<OptionsPage />} />
+          <Route path="/previews" element={<OptionsPage />} />
           <Route path="/itinerary/:id" element={<ItineraryPage />} />
         </Routes>
       </div>
