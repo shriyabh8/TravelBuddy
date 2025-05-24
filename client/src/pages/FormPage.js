@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Form() {
+function FormPage() {
   const [location, setLocation] = useState('');
   const [dates, setDates] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
@@ -93,5 +93,5 @@ function Form() {
   );
 }
 
-export default Form;
+export default FormPage;
 
