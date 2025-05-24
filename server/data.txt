@@ -2,17 +2,12 @@
 {"location":"9:47:45","dates":"","additionalInfo":""}
 {"location":"10","dates":"20","additionalInfo":"30"}
 {"location":"me","dates":"myself","additionalInfo":"i"}
-{"location":"1","dates":"2","additionalInfo":"3\n"}
 {"location":"1","dates":"2","additionalInfo":"3"}
-{"location":"4","dates":"5","additionalInfo":"6"}
-{"location":"4","dates":"5","additionalInfo":"6"}
 {"location":"4","dates":"5","additionalInfo":"6"}
 {"location":"5","dates":"6","additionalInfo":"7"}
 {"location":"7","dates":"8","additionalInfo":"9"}
 {"location":"nfiowe","dates":"ejaipfno","additionalInfo":"asdfgh"}
 {"location":"rnoiwef","dates":"fpiwe","additionalInfo":"fniow"}
-{"location":"fnuoew","dates":"fjiepo","additionalInfo":"fneiwo"}
-{"location":"fnuoew","dates":"fjiepo","additionalInfo":"fneiwo"}
 {"location":"fnuoew","dates":"fjiepo","additionalInfo":"fneiwo"}
 {"location":"fioew","dates":"fmedopqaf","additionalInfo":"fnipewf"}
 {"location":"opae","dates":"feniwo","additionalInfo":"eaposj"}
@@ -22,3 +17,4 @@
 {"location":"niufr","dates":"fewoif","additionalInfo":"fnweio"}
 {"location":"fnejow","dates":"feipnwf","additionalInfo":"fneiwo"}
 {"location":"nioufw","dates":"fenwipofnwr","additionalInfo":"fneiowfnog"}
+{"location":"aw;eoihfa","dates":"as'odijf'apsd","additionalInfo":"isjf'pweiFAEW"}

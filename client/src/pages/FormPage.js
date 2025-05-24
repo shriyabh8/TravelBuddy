@@ -8,7 +8,6 @@ function FormPage() {
 
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -39,15 +38,15 @@ function FormPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 font-sans">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 space-y-6"
+        className="w-full max-w-2xl bg-white rounded-lg p-10 space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">Plan Your Trip</h2>
+        <h2 className="text-6xl font-bold text-left text-pink-600 mb-8 pl-6">Plan Your Trip!</h2>
 
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
+        <div className="space-y-2">
+          <label className="block text-lg font-normal text-gray-800">
             Where would you like to go?
           </label>
           <input
@@ -55,12 +54,12 @@ function FormPage() {
             placeholder="Enter a location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-50 placeholder-gray-500"
+            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
+        <div className="space-y-2">
+          <label className="block text-lg font-normal text-gray-800">
             When would you like to go?
           </label>
           <input
@@ -68,12 +67,12 @@ function FormPage() {
             placeholder="Enter the start and end date"
             value={dates}
             onChange={(e) => setDates(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-50 placeholder-gray-500"
+            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
+        <div className="space-y-2">
+          <label className="block text-lg font-normal text-gray-800">
             Please enter any other information you want us to integrate into your itinerary!
           </label>
           <textarea
@@ -81,12 +80,12 @@ function FormPage() {
             placeholder="Add notes like preferred activities, travel restrictions, etc."
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-50 placeholder-gray-500"
+            className="w-full px-4 py-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 bg-white placeholder-gray-400"
           />
         </div>
 
         <button
-        type="submit"
+          type="submit"
           className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-lg rounded-xl shadow-md transition duration-200"
         >
           Generate!
