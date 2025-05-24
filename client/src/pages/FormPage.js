@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function FormPage() {
   const [location, setLocation] = useState('');
   const [dates, setDates] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
+
+  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -27,9 +30,9 @@ function FormPage() {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
       const result = await response.json();
       console.log('Submission successful:', result);
+      navigate('/options');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -83,7 +86,7 @@ function FormPage() {
         </div>
 
         <button
-          type="submit"
+        type="submit"
           className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-lg rounded-xl shadow-md transition duration-200"
         >
           Generate!
@@ -94,4 +97,3 @@ function FormPage() {
 }
 
 export default FormPage;
-
