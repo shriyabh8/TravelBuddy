@@ -34,8 +34,8 @@ const JsonFromServer = () => {
         displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
       }
       return (
-        <div key={key} className="mb-1">
-          <strong className="capitalize text-indigo-700">{key}:</strong> {displayValue}
+        <div key={key} className="mb-12">
+          <strong className="capitalize text-[#36a2a4] text-xl font-open-sans mb-6">{key}:</strong> {displayValue}
         </div>
       );
     });
@@ -46,14 +46,13 @@ const JsonFromServer = () => {
       {allData.length === 0 ? (
         <p className="italic text-gray-500">No data available.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+        <div className="bg-white shadow-xl rounded-2xl p-6 w-80 min-h-[400px] border border-gray-200">
           {allData.map((item, index) => (
             <div
               key={index}
               onClick={() => navigate(`/itinerary/${index}`)}
-              className="cursor-pointer mb-4 hover:bg-gray-50 p-2 rounded transition"
+              className="cursor-pointer mb-6 hover:bg-gray-100 p-2 w-75 min-h-[450px] rounded transition"
             >
-              <div className="text-sm text-gray-500 mb-1">Item #{index + 1}</div>
               {renderPreview(item)}
             </div>
           ))}

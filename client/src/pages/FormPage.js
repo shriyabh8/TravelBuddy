@@ -59,7 +59,7 @@ function FormPage() {
             placeholder="Enter a location (eg city/country)."
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
+            className="border border-gray-300 font-open-sansrounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
@@ -72,12 +72,12 @@ function FormPage() {
             placeholder="Enter the start and end date."
             value={dates}
             onChange={(e) => setDates(e.target.value)}
-            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
+            className="border border-gray-300 font-open-sansrounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
         <div className="space-y-2">
-        <label className="block text-lg font-normal text-gray-800">
+          <label className="block text-lg font-open-sans text-[#383a32]">
             How many people are going?
           </label>
           <input
@@ -85,12 +85,12 @@ function FormPage() {
             placeholder="Enter the number of people"
             value={people}
             onChange={(e) => setPeople(e.target.value)}
-            className="border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
+            className="border border-gray-300 font-open-sans rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-lg font-normal text-gray-800">
+          <label className="block text-lg font-open-sans text-[#383a32]">
             Please enter any other information you want us to integrate into your itinerary!
           </label>
           <textarea
@@ -98,7 +98,7 @@ function FormPage() {
             placeholder="Add notes like preferred activities, travel restrictions, etc."
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
-            className="w-full px-4 py-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 bg-white placeholder-gray-400"
+            className="w-full px-4 py-3 font-open-sansrounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 bg-white placeholder-gray-400"
           />
         </div>
 
