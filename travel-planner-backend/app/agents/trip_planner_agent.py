@@ -1,11 +1,21 @@
 from typing import Dict, List, Any, Optional
-from datetime import datetime, timedelta
+from datetime import datetime
 from .goal_agent import GoalAgent
 from .poi_agent import POIAgent
 from .itinerary_agent import ItineraryAgent
 import logging
+from app.utils.api_wrappers import get_location_coordinates 
+import json
+from flask import Flask, request, jsonify
 
-logger = logging.getLogger(__name__)
+app = Flask(__name__, instance_relative_config=True)
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime("%Y-%m-%d")
+        return super().default(obj)
 
 class TripPlannerAgent:
     def __init__(self):
@@ -15,16 +25,20 @@ class TripPlannerAgent:
         self.itinerary_agent = ItineraryAgent()
 
         self.mock_hotel = {
-            "name": "The Park Hyderabad",
-            "location": (17.3850, 78.4867),
-            "rating": 4.8,
-            "address": "1-3-1209, Road No. 1, Banjara Hills, Hyderabad, Telangana 500034, India",
+            "name": "The Ritz-Carlton San Francisco",
+            "location": (37.7896, -122.4073),  # Coordinates for Nob Hill
+            "rating": 5.0,
+            "address": "600 Stockton St, San Francisco, CA 94108, USA",
             "amenities": [
                 "Free WiFi", "24-hour front desk", "Restaurant", "Bar",
-                "Spa", "Fitness center", "Swimming pool", "Airport shuttle"
+                "Spa", "Fitness center", "Indoor pool", "Airport shuttle",
+                "Business center", "Meeting rooms", "Concierge service",
+                "Luxury suites", "Butler service", "Valet parking",
+                "Executive lounge", "Complimentary breakfast",
+                "In-room dining", "Pet-friendly"
             ],
-            "price": 4500.00,
-            "currency": "INR"
+            "price": 550.00,
+            "currency": "USD"
         }
 
     def plan_trip(self, user_input: str, destination: str, start_date: str, duration: int) -> Dict[str, Any]:
@@ -63,11 +77,10 @@ class TripPlannerAgent:
 
         activities_pois = self.poi_agent_activities.get_pois(max_results=20)
         food_pois = self.poi_agent_food.get_pois(max_results=20)
-        print(f"Activities POI count: {len(activities_pois)}")
-        print(f"Food POI count: {len(food_pois)}")
         hotel_info = self.mock_hotel
         start_date_dt = datetime.strptime(start_date, "%Y-%m-%d")
 
+        # import pdb; pdb.set_trace()
         itinerary = self.itinerary_agent.generate_itinerary(
             duration=duration,
             start_date=start_date_dt,
@@ -76,7 +89,6 @@ class TripPlannerAgent:
             hotel_info=hotel_info,
             user_tags=preferences['osm_tags']
         )
-
         return {
             "destination": destination,
             "start_date": start_date,
@@ -100,45 +112,94 @@ class TripPlannerAgent:
         summary.append("\nItinerary Overview:")
         summary.append(f"Total Activities: {trip_plan['itinerary']['total_activities']}")
         summary.append(f"Total Meals: {trip_plan['itinerary']['total_meals']}")
-        summary.append(f"Total Travel Time: {trip_plan['itinerary']['total_travel_time']} minutes")
 
         for day in trip_plan['itinerary']['itinerary']:
             summary.append(f"\nDay {day['day']}: {day['date'].strftime('%A, %B %d')}")
             summary.append("\nActivities:")
             if day['activities']:
                 for activity in day['activities']:
-                    summary.append(f"- {activity.name} ({activity.type})")
-                    summary.append(f"  Time: {activity.start_time} to {activity.end_time}")
-                    summary.append(f"  Duration: {activity.duration} minutes")
+                    summary.append(f"- {activity['name']} ({activity['type']})")
+                    summary.append(f"  Time: {activity['start_time']} to {activity['end_time']}")
+                    summary.append(f"  Duration: {activity['duration']} minutes")
             else:
                 summary.append("  No activities scheduled for this day")
 
             summary.append("\nMeals:")
             if day['meals']:
                 for meal in day['meals']:
-                    summary.append(f"- {meal.name} ({meal.type})")
-                    summary.append(f"  Time: {meal.start_time} to {meal.end_time}")
-                    summary.append(f"  Duration: {meal.duration} minutes")
-                    summary.append(f"  Rating: {meal.rating if meal.rating is not None else 'N/A'}★")
+                    summary.append(f"- {meal['name']} ({meal['type']})")
+                    summary.append(f"  Time: {meal['start_time']} to {meal['end_time']}")
+                    summary.append(f"  Duration: {meal['duration']} minutes")
+                    summary.append(f"  Rating: {meal['rating'] if meal['rating'] is not None else 'N/A'}★")
             else:
                 summary.append("  No meals scheduled for this day")
 
         return "\n".join(summary)
 
+def format_itinerary(trip_data):
+    formatted_itinerary = {}
+    
+    # Helper function to extract website from tags
+    def get_website(tags):
+        website_tags = [tag[1] for tag in tags if tag[0] == 'website' or tag[0] == 'contact:website']
+        return website_tags[0] if website_tags else None
+    
+    # Iterate through each day's activities and meals
+    for day in trip_data['itinerary']['itinerary']:
+        day_number = f"day_{day['day']}"
+        formatted_itinerary[day_number] = {
+            "activities": [],
+            "meals": []
+        }
+        
+        # Format activities
+        for activity in day['activities']:
+            website = get_website(activity.get('tags', []))
+            formatted_activity = {
+                "name": activity['name'],
+                "price": activity.get('price', 'Free'),
+                "duration": f"{activity['duration']} minutes",
+                "website": website,
+                "description": activity.get('description', ''),
+                "amenities": activity.get('amenities', []),
+                "rating": activity.get('rating'),
+                "location": activity.get('location')
+            }
+            formatted_itinerary[day_number]["activities"].append(formatted_activity)
+        
+        # Format meals
+        for meal in day['meals']:
+            website = get_website(meal.get('tags', []))
+            formatted_meal = {
+                "name": meal['name'],
+                "price": meal.get('price', 'Free'),
+                "duration": f"{meal['duration']} minutes",
+                "website": website,
+                "description": meal.get('description', ''),
+                "amenities": meal.get('amenities', []),
+                "rating": meal.get('rating'),
+                "location": meal.get('location')
+            }
+            formatted_itinerary[day_number]["meals"].append(formatted_meal)
+    
+    return formatted_itinerary
 
-
-if __name__ == "__main__":
-    # Example usage
+#@app.route('/plan_trip', methods=['POST'])
+def main():
     planner = TripPlannerAgent()
     
     # Example trip planning
     trip = planner.plan_trip(
-        user_input="I want to visit historical places and shopping malls in Hyderabad",
-        destination="Hyderabad",
+        user_input="I want to go to SFO and explore the city.",
+        destination="San Francisco, CA",
         start_date="2025-05-25",
         duration=3
     )
-    
-    # Display the trip summary
 
-    print(planner.get_trip_summary(trip))
+    trip = format_itinerary(trip)
+
+    json_trip = json.dumps(trip, cls=DateTimeEncoder)
+    print(json_trip)
+
+if __name__ == '__main__':
+    main()

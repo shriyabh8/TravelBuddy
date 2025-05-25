@@ -354,6 +354,3 @@ Now process this user input:
         
         return "none"
 
-if __name__ == "__main__":
-    goal_agent = GoalAgent()
-    print(goal_agent.extract("I want to explore to Vancouver, Stanley park, Indian food."))

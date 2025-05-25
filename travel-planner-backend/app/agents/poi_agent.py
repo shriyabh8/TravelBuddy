@@ -1,7 +1,6 @@
-from time import thread_time_ns
 from typing import Dict, List, Optional, Any, Tuple, Union
 from dataclasses import dataclass
-from app.utils.api_wrappers import fetch_places, OSM_TAGS
+from app.utils.api_wrappers import fetch_places
 import logging
 
 logger = logging.getLogger(__name__)
@@ -239,48 +238,3 @@ class POIAgent:
             logger.error(f"Error fetching POIs: {str(e)}")
             return []
 
-if __name__ == "__main__":
-    # Example OSM tags for parks and restaurants
-    osm_tags = [
-        ["leisure", "park"],
-        ["amenity", "restaurant"],
-        ["cuisine", "indian"]
-    ]
-    
-    poi_agent = POIAgent(
-        location="Vancouver",
-        osm_tags=osm_tags,
-        budget={"min": None, "max": None}
-    )
-    pois = poi_agent.get_pois(max_results=20)
-    print(f"\nFound {len(pois)} recommended POIs\n")
-    for poi in pois:
-        print(f"Name: {poi.name}")
-        print(f"Theme: {poi.matched_theme}")
-        print(f"Tags: {poi.tags}")
-        print("-" * 40)
-        print(f"Type: {poi.type}")
-        print(f"Location: {poi.location}")
-        if poi.description:
-            print(f"Description: {poi.description}")
-        print(f"Theme Score: {poi.theme_score:.2f}")
-        print(f"Matched Theme: {poi.matched_theme}")
-        print(f"Relevance Score: {poi.relevance_score:.2f}")
-        print(f"Tag Score: {poi.tag_score:.2f}")
-        
-        # Print additional information
-        if poi.price is not None:
-            print(f"Price: {poi.price}")
-        if poi.luxury_level:
-            print(f"Luxury Level: {poi.luxury_level}")
-        if poi.rating is not None:
-            print(f"Rating: {poi.rating:.1f}")
-        if poi.amenities:
-            print("Amenities:")
-            for amenity in poi.amenities:
-                print(f"  {amenity}")
-        
-        print("Tags:")
-        for key, value in poi.tags:
-            print(f"  {key}={value}")
-        print("-" * 50)
