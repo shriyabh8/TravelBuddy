@@ -11,36 +11,83 @@ function FormPage() {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const today = new Date(); 
+  const today = new Date();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate form data
+    if (!from || !to || !startDate || !endDate) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Format dates
+    // Validate form data
+    if (!from || !to || !startDate || !endDate || !people) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Format dates
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+      const formattedEndDate = endDate.toISOString().split('T')[0];
+
     const formData = {
       from,
       to,
-      startDate,
-      endDate,
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
       people,
       additionalInfo,
     };
 
+
+    console.log('Form data being sent:', formData); // Add logging to see the data structure
+
     try {
-      const response = await fetch('http://localhost:3000/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      try {
+        const response = await fetch('http://localhost:5001/submit_trip_data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('Server response:', result);
+        
+        if (result.key) {
+          // Store the key in localStorage for later use
+          localStorage.setItem("itinerary_key", result.key);
+          navigate('/previews');
+        } else {
+          throw new Error('Invalid response from server');
+        }
+      } catch (error) {
+        console.error('Error details:', error);
+        alert('Error submitting form: ' + error.message);
       }
-      const result = await response.json();
-      console.log('Submission successful:', result);
 
+      // Save the key for itinerary fetch later
+      // Save form data in localStorage
+      localStorage.setItem("trip_form_data", JSON.stringify({
+        from,
+        to,
+        startDate: startDate?.toISOString(),
+        endDate: endDate?.toISOString(),
+        people,
+        additionalInfo,
+      }));
+
+      // Redirect
       navigate('/previews');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -48,13 +95,15 @@ function FormPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative overflow-hidden p-4 font-sans"
-                    style={{ backgroundImage: `url(${beachImage})` }}>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative overflow-hidden p-4 font-sans"
+      style={{ backgroundImage: `url(${beachImage})` }}
+    >
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white rounded-lg p-10 space-y-6"
       >
-        <h2 className="text-6xl font-poppins font-extrabold text-left text-[#36a2a4] mb-8 pl-2">Plan Your Trip!</h2>
+        <h2 className="text-6xl font-extrabold text-left text-[#36a2a4] mb-8 pl-2">Plan Your Trip!</h2>
 
         <div className="space-y-3">
           <label className="block text-lg font-open-sans text-[#383a32]">
@@ -83,9 +132,8 @@ function FormPage() {
         </div>
 
         <div>
-          <label htmlFor="start-date">Start Date:</label>
+          <label>Start Date:</label>
           <DatePicker
-            id="start-date"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             selectsStart
@@ -97,9 +145,8 @@ function FormPage() {
             placeholderText="Start Date (mm/dd/yyyy)"
           />
 
-          <label htmlFor="end-date">End Date:</label>
+          <label>End Date:</label>
           <DatePicker
-            id="end-date"
             selected={endDate}
             onChange={(date) => setEndDate(date)}
             selectsEnd
@@ -107,40 +154,37 @@ function FormPage() {
             endDate={endDate}
             minDate={startDate || today}
             dateFormat="MM/dd/yyyy"
-            className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans ml-3"
+            className="p-2 border rounded ml-3"
             placeholderText="End Date (mm/dd/yyyy)"
-          />
-      </div>
-        
-        <div className="space-y-2">
-          <label className="block text-lg font-open-sans text-[#383a32]">
-            How many people are going?
-          </label>
-          <input
-            type="text"
-            placeholder="Enter the number of people"
-            value={people}
-            onChange={(e) => setPeople(e.target.value)}
-            className="border border-gray-300 font-open-sans rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-300 transition duration-200 ease-in-out placeholder-gray-400"
           />
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-lg font-open-sans text-[#383a32]">
+        <div>
+          <label className="block text-lg text-[#383a32]">How many people are going?</label>
+          <input
+            type="text"
+            value={people}
+            onChange={(e) => setPeople(e.target.value)}
+            className="border rounded w-full py-3 px-4"
+          />
+        </div>
+
+        <div>
+          <label className="block text-lg text-[#383a32]">
             Please enter any other information you want us to integrate into your itinerary!
           </label>
           <textarea
             rows="5"
-            placeholder="Add notes like preferred activities, travel restrictions, etc."
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
-            className="w-full px-4 py-3 font-open-sansrounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 bg-white placeholder-gray-400"
+            className="w-full px-4 py-3 border rounded"
+            placeholder="E.g. activities, dietary preferences, pace, etc."
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-open-sans font-bold text-lg rounded-xl shadow-md transition duration-200"
+          className="w-full py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-bold text-lg rounded-xl"
         >
           Generate Itinerary!
         </button>
