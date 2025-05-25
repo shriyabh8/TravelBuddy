@@ -136,56 +136,56 @@ class TripPlannerAgent:
 
         return "\n".join(summary)
 
-def format_itinerary(trip_data):
-    formatted_itinerary = {}
-    
-    # Helper function to extract website from tags
-    def get_website(tags):
-        website_tags = [tag[1] for tag in tags if tag[0] == 'website' or tag[0] == 'contact:website']
-        return website_tags[0] if website_tags else None
-    
-    # Iterate through each day's activities and meals
-    for day in trip_data['itinerary']['itinerary']:
-        day_number = f"day_{day['day']}"
-        formatted_itinerary[day_number] = {
-            "activities": [],
-            "meals": []
-        }
+    def format_itinerary(self, trip_data):
+        formatted_itinerary = {}
         
-        # Format activities
-        for activity in day['activities']:
-            website = get_website(activity.get('tags', []))
+        # Helper function to extract website from tags
+        def get_website(tags):
+            website_tags = [tag[1] for tag in tags if tag[0] == 'website' or tag[0] == 'contact:website']
+            return website_tags[0] if website_tags else None
         
-            
-            formatted_activity = {
-                "name": activity['name'],
-                "price": activity.get('price', 'Free'),
-                "duration": f"{activity['duration']} minutes",
-                "website": website,
-                "description": activity.get('description', ''),
-                "amenities": activity.get('amenities', []),
-                "rating": activity.get('rating'),
-                "location": activity.get('location')
+        # Iterate through each day's activities and meals
+        for day in trip_data['itinerary']['itinerary']:
+            day_number = f"day_{day['day']}"
+            formatted_itinerary[day_number] = {
+                "activities": [],
+                "meals": []
             }
-            formatted_itinerary[day_number]["activities"].append(formatted_activity)
-        
-        # Format meals
-        for meal in day['meals']:
-            website = get_website(meal.get('tags', []))
             
-            formatted_meal = {
-                "name": meal['name'],
-                "price": meal.get('price', 'Free'),
-                "duration": f"{meal['duration']} minutes",
-                "website": website,
-                "description": meal.get('description', ''),
-                "amenities": meal.get('amenities', []),
-                "rating": meal.get('rating'),
-                "location": meal.get('location')
-            }
-            formatted_itinerary[day_number]["meals"].append(formatted_meal)
-    
-    return formatted_itinerary
+            # Format activities
+            for activity in day['activities']:
+                website = get_website(activity.get('tags', []))
+            
+                
+                formatted_activity = {
+                    "name": activity['name'],
+                    "price": activity.get('price', 'Free'),
+                    "duration": f"{activity['duration']} minutes",
+                    "website": website,
+                    "description": activity.get('description', ''),
+                    "amenities": activity.get('amenities', []),
+                    "rating": activity.get('rating'),
+                    "location": activity.get('location')
+                }
+                formatted_itinerary[day_number]["activities"].append(formatted_activity)
+            
+            # Format meals
+            for meal in day['meals']:
+                website = get_website(meal.get('tags', []))
+                
+                formatted_meal = {
+                    "name": meal['name'],
+                    "price": meal.get('price', 'Free'),
+                    "duration": f"{meal['duration']} minutes",
+                    "website": website,
+                    "description": meal.get('description', ''),
+                    "amenities": meal.get('amenities', []),
+                    "rating": meal.get('rating'),
+                    "location": meal.get('location')
+                }
+                formatted_itinerary[day_number]["meals"].append(formatted_meal)
+        
+        return formatted_itinerary
 
 #@app.route('/plan_trip', methods=['POST'])
 def main():

@@ -2,9 +2,11 @@ import flights
 import hotels
 import random
 import hotel_agent
+import trip_planner_agent
+import json
 
 def process_date(date):
-    return date[:10]
+    return str(date)[:10]
 
 def condense_data(data, origin, destination, depart):
     result = {}
@@ -70,13 +72,30 @@ def make_itinerary(user_input):
 
     hotel_data = process_hotel_data(user_input)
 
+    planner = trip_planner_agent.TripPlannerAgent()
+
+
+
+    start = user_input['startDate']
+    end = user_input['endDate']
+
+    # Calculate duration in days
+    duration = (start - end).days
+    trip = planner.plan_trip(
+        user_input['from'] + user_input['additionalInfo'],
+        user_input['to'],
+        start,
+        duration
+    )
+
+    trip = trip_planner_agent.format_itinerary(trip)
+
+    activities = json.dumps(trip, cls=trip_planner_agent.DateTimeEncoder)
+    print("Activities")
+    print(activities)
+
     complete_data['flight_depart'] = departing_flight
     complete_data['return_flight'] = return_flight
     complete_data['hotel_data'] = hotel_data
+    complete_data['activities'] = activities
     return complete_data
-
-data = {"from":"San Francisco", "to":"London, UK","startDate":"2025-06-16T07:00:00.000Z","endDate":"2025-05-31T07:00:00.000Z","people":"4","additionalInfo":"I want to go to museums and Buckhingam Palace. I want a luxury hotel and Indian restaurants."}
-print(make_itinerary(data))
-
-
-

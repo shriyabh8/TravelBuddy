@@ -6,9 +6,10 @@ const Preview = ({itinerary_key}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Itinerary key:", itinerary_key);
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/itinerary-data");
+        const res = await fetch("http://localhost:5001/generate_itinerary/" + itinerary_key);
         const data = await res.json();
         const item = data[String(itinerary_key)];
         setAllData(item ? [item] : []);
