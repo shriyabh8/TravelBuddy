@@ -98,7 +98,7 @@ function FormPage() {
         
         <div className="space-y-2">
           <label className="block text-lg font-open-sans text-[#383a32]">
-            How many people are going?
+            How many people are going????
           </label>
           <input
             type="text"
