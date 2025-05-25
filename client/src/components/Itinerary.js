@@ -34,13 +34,16 @@ const Itinerary = ({itinerary_key}) => {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="flex flex-col items-center justify-center p-4">
+
+      <div className="w-full flex justify-start">
       <button
     onClick={() => navigate('/previews')}
-    className="text-indigo-600 hover:underline mb-6 block"
+    className="text-[#383a32] font-open-sanshover:underline hover:text-cyan-700 mb-12 ml-9 pt-2 block"
   >
     ← Back To Previews
   </button>
+
   <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
     <h1 className="text-3xl font-bold text-gray-800 mb-6">Trip Details</h1>
       {allData.length === 0 ? (
@@ -56,6 +59,7 @@ const Itinerary = ({itinerary_key}) => {
           ))
       )}
     </div>
+  </div>
   </div>
 
   );

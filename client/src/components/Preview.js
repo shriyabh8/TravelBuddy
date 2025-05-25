@@ -46,12 +46,12 @@ const Preview = ({itinerary_key}) => {
       {allData.length === 0 ? (
         <p className="italic text-gray-500">No data available.</p>
       ) : (
-        <div className="bg-white shadow-xl rounded-2xl p-6 w-80 min-h-[400px] border border-gray-200">
+        <div className="bg-white shadow-xl hover:shadow-2xl transition duration-200 ease-in-out rounded-2xl p-6 w-80 min-h-[400px] border border-gray-200">
           {allData.map((item, index) => (
             <div
               key={index}
               onClick={() => navigate(`/itinerary/${itinerary_key}`)}
-              className="cursor-pointer mb-6 hover:bg-gray-100 p-2 w-75 min-h-[450px] rounded transition"
+              className="cursor-pointer mb-6 p-2 w-75 min-h-[450px] rounded transition"
             >
               {renderPreview(item)}
             </div>
