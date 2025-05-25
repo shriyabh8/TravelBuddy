@@ -46,7 +46,7 @@ const Preview = ({itinerary_key}) => {
       {allData.length === 0 ? (
         <p className="italic text-gray-500">No data available.</p>
       ) : (
-        <div className="bg-white shadow-xl hover:shadow-2xl transition duration-200 ease-in-out rounded-2xl p-6 w-80 min-h-[400px] border border-gray-200">
+        <div className="bg-white shadow-xl hover:shadow-2xl hover:bg-gray-200 transition duration-200 ease-in-out rounded-2xl p-6 w-80 min-h-[400px] border border-gray-200">
           {allData.map((item, index) => (
             <div
               key={index}

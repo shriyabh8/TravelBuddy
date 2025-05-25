@@ -1,2 +1,35 @@
 {"from":"san jose","to":"london","startDate":"2025-05-14T07:00:00.000Z","endDate":"2025-05-30T07:00:00.000Z","people":"3","additionalInfo":"buckingham palace, luxury hotel, indian food, musuems"}
 {"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":"2025-04-27T07:00:00.000Z","endDate":"2025-05-03T07:00:00.000Z","people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"San Francisco","to":"Miami","startDate":"2025-05-25T07:00:00.000Z","endDate":"2025-05-31T07:00:00.000Z","people":"5","additionalInfo":"Snorkeling"}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"input":""}
+{"input":""}
+{"input":"Hello\n\n\n"}
+{"input":"Type your suggestions here"}
+{"input":"Type your suggestions here"}
+{"input":"Hello from the other side"}
+{"input":"Hellooooo"}
+{"input":"HELLO"}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"input":"yo"}
+{"from":"Ohio","to":"Kentucky","startDate":"2025-05-29T07:00:00.000Z","endDate":"2025-06-29T07:00:00.000Z","people":"4","additionalInfo":""}
+{"from":"","to":"","startDate":null,"endDate":null,"people":"","additionalInfo":""}
+{"input":"make it more luxurious"}

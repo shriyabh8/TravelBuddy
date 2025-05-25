@@ -12,7 +12,7 @@ def main():
                 data = json.loads(last_line)
                 with open('itinerary-data.txt', 'w') as f_out:
                     #mock data
-                    f_out.write('{"location": "1", "dates": "2", "people": "3", "additionalInfo": "4"}\n')
+                    f_out.write('{"Flights": "Flight To: INSERTFlight Back: INSERT", "Hotels": "hotel name and other information", "people": "3", "additionalInfo": "4"}\n')
                     f_out.write('{"location": "5", "dates": "6", "people": "7", "additionalInfo": "8"}\n')
                     f_out.write('{"location": "9", "dates": "0", "people": "1", "additionalInfo": "2"}\n')
 

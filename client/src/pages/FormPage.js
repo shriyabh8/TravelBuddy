@@ -56,12 +56,12 @@ function FormPage() {
       >
         <h2 className="text-6xl font-poppins font-extrabold text-left text-[#36a2a4] mb-8 pl-2">Plan Your Trip!</h2>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           <label className="block text-lg font-open-sans text-[#383a32]">
             Where would you like to go?
           </label>
           <div>
-          <label htmlFor="start-date">Origin:</label>
+          <label>Origin:</label>
           <input
             type="text"
             placeholder="Starting place?"
@@ -70,7 +70,7 @@ function FormPage() {
             className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans mr-2 ml-3"
           />
 
-          <label htmlFor="end-date">Destination:</label>
+          <label> Destination:</label>
           <input
             type="text"
             placeholder="Where to?"
@@ -82,8 +82,6 @@ function FormPage() {
 
         </div>
 
-        
-
         <div>
           <label htmlFor="start-date">Start Date:</label>
           <DatePicker
@@ -94,8 +92,8 @@ function FormPage() {
             startDate={startDate}
             endDate={endDate}
             dateFormat="MM/dd/yyyy"
-            className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans mr-2 ml-3"
-            placeholderText="Start Date"
+            className="p-2 w-55 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans mr-4 ml-3"
+            placeholderText="Start Date (mm/dd/yyyy)"
           />
 
           <label htmlFor="end-date">End Date:</label>
@@ -109,7 +107,7 @@ function FormPage() {
             minDate={startDate}
             dateFormat="MM/dd/yyyy"
             className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans ml-3"
-            placeholderText="End Date"
+            placeholderText="End Date (mm/dd/yyyy)"
           />
       </div>
         
