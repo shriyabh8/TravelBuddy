@@ -50,14 +50,11 @@ def submit_trip_data():
         required = ['start_date', 'end_date', 'from', 'to', 'additionalInfo', 'people']
         if not all(field in data for field in required):
             return jsonify({"error": "Missing required fields"}), 400
-        
-        print("this is the data", data)
         # Use global keyword to modify the global variable
         global trip_data_store
         # Generate itinerary and store it with a key
         itinerary_data = make_itinerary(data)
         trip_data_store["here"] = itinerary_data
-        print("this is the trip data store 1", trip_data_store)
         
         return jsonify({"message": "Trip data stored"})
     except Exception as e:
@@ -68,39 +65,6 @@ def submit_trip_data():
 @app.route('/generate_itinerary/<itinerary_key>', methods=['GET'])
 def generate_itinerary(itinerary_key):
     try:
-        # logger.info(f"Available data: {trip_data_store}")
-
-        # logger.info(format(trip_data_store)[key])
-
-        # Format the data using make_itinerary
-        # # Get dates from data - they should already be in YYYY-MM-DD format
-        # start_date = data['start_date']
-        # end_date = data['end_date']
-        # duration = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days
-
-        # # Log the trip plan
-        # logger.info(f"Generated trip plan for {data['to']}")
-
-        # # formatted = trip_planner.format_itinerary(trip)
-        #"{"paris-2025-05-26T07:00:00.000Z": {"from": "milan", "to": "paris", "start_date": "2025-05-26T07:00:00.000Z", "end_date": "2025-05-30T07:00:00.000Z", "people": "3", "additionalInfo": "sdfghjk"}}"
-        
-        # itinerary=make_itinerary(trip_data_store["here"])
-        # {'from': 'milan', 'to': 'paris', 'start_date': '2025-05-26T07:00:00.000Z', 'end_date': '2025-05-30T07:00:00.000Z', 'people': '3', 'additionalInfo': 'asdfghjk'}
-        # data = {'from': 'milan', 'to': 'paris', 'start_date': '2025-05-26T07:00:00.000Z', 'end_date': '2025-05-30T07:00:00.000Z', 'people': '3', 'additionalInfo': 'asdfghjk'}
-
-        # start_date = datetime.fromisoformat(data['start_date'][:-1] + '+00:00')
-        # end_date = datetime.fromisoformat(data['end_date'][:-1] + '+00:00')
-
-        # # Calculate duration in days
-        # duration = (end_date - start_date).days
-        # trip = planner.plan_trip(
-        #     user_input=user_input['from'] + " " + user_input['additionalInfo'],
-        #     destination=user_input['to'],
-        #     start_date=start_date.strftime("%Y-%m-%d"),
-        #     duration=duration
-        #     )
-
-        # ItineraryAgent().generate_itinerary(duration, datetime.fromisoformat(data['start_date'][:-1] + '+00:00'), [], [], {}, [])
         return jsonify(trip_data_store["here"][itinerary_key])
     except ValueError:
         return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400

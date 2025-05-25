@@ -11,6 +11,7 @@ function FormPage() {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [start_date, setstart_date] = useState(null);
   const [end_date, setend_date] = useState(null);
+  const [buttonText, setButtonText] = useState('Generate Itinerary!');
   const today = new Date();
   const navigate = useNavigate();
 
@@ -165,9 +166,10 @@ function FormPage() {
 
         <button
           type="submit"
+          onClick={() => setButtonText('Generating Itinerary...')}
           className="w-full py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-bold text-lg rounded-xl"
         >
-          Generate Itinerary!
+          {buttonText}
         </button>
       </form>
     </div>

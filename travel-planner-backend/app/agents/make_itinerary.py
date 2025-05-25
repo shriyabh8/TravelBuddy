@@ -12,6 +12,49 @@ load_dotenv()
 def process_date(date):
     return date[:10]
 
+def format_day_activities(activities_data):
+    formatted = {}
+
+    for day_key, day_content in activities_data.items():
+        day_number = int(day_key.split("_")[1])
+        activity_summaries = []
+
+        for activity in day_content['activities']:
+            name = activity['name']
+            duration = activity['duration']
+            price = activity['price']
+            website = activity['website']
+
+            summary = f"{name} ({duration.lower()}"
+            if price and price != "Free":
+                summary += f", price: {price}"
+            elif price == "Free":
+                summary += ", free"
+            if website:
+                summary += f", website: {website}"
+            summary += ")"
+            activity_summaries.append(summary)
+
+
+        for meal in day_content['meals']:
+            name = meal['name']
+            duration = meal['duration']
+            website = meal['website'] if activity['website'] else "N/A"
+
+            summary = f"{name} ({duration.lower()}"
+            if website:
+                summary += f", website: {website}"
+            summary += ")"
+            activity_summaries.append(summary)
+
+        if activity_summaries:
+            formatted["Day " + str(day_number)] = "\n".join(activity_summaries)
+        else:
+            pass
+
+    return formatted
+
+
 def condense_data(data, origin, destination, depart):
     result = {}
     result['Flight offer'] = f"Depart from {origin} to {destination} on {depart}:\n"
@@ -99,16 +142,16 @@ def format(data):
         return output
 
     
-    try:
-        full_data = {
-            "0": choose_one_flight_and_hotel(),
-            "1": choose_one_flight_and_hotel(),
-            "2": choose_one_flight_and_hotel()
-        }
-        full_data['0']['Day 1'] = "this is a very long string that will be used to test the itinerary agent and it should be even longer and wrapped around the text box maybe a little bit longer"
-        return full_data
-    except Exception as e:
-        print(f"Error processing write data: {e}")
+    full_data = {
+        "0": choose_one_flight_and_hotel(),
+        "1": choose_one_flight_and_hotel(),
+        "2": choose_one_flight_and_hotel()
+    }
+    activities = format_day_activities(data['Activities'])
+    full_data['0'].update(activities)
+    full_data['1'].update(activities)
+    full_data['2'].update(activities)
+    return full_data
 
 
 
@@ -141,9 +184,6 @@ def make_itinerary(user_input):
     complete_data['flight_depart'] = departing_flight
     complete_data['return_flight'] = return_flight
     complete_data['hotel_data'] = hotel_data
-    complete_data['activities'] = activities
-
+    complete_data['Activities'] = json.loads(activities)
+    print(complete_data)
     return format(complete_data)
-
-# data = {'from': 'paris', 'to': 'la', 'start_date': '2025-05-27T07:00:00.000Z', 'end_date': '2025-05-30T07:00:00.000Z', 'people': '3', 'additionalInfo': 'asdfghjk'}
-# print(make_itinerary(data))
