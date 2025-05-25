@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import beachImage from '../assets/beach_img.jpeg';
 import Preview from '../components/Preview';
 
 function OptionsPage() {
@@ -10,11 +11,12 @@ function OptionsPage() {
   };
 
   return (
-    <div className="p-6 flex flex-col items-center ml-8">
+    <div className="p-6 flex flex-col items-center bg-cover bg-center bg-no-repeat min-h-screen"
+        style={{ backgroundImage: `url(${beachImage})` }}>
       <div className="w-full flex justify-start">
         <button
             onClick={() => navigate('/form')}
-            className="justify-left text-[#383a32] font-open-sans underline hover:font-bold mb-3 block"
+            className="justify-left text-[#383a32] font-open-sans hover:text-cyan-700 mb-3 block p-4"
           >
             ← Edit Survey
           </button>
@@ -40,6 +42,7 @@ function OptionsPage() {
         Regenerate
       </button>
       </div>
+
       <div className="flex flex-col items-center">
         <Preview itinerary_key={2} />
         <button
