@@ -6,8 +6,9 @@ import requests
 
 logger = logging.getLogger(__name__)
 load_dotenv()
+import os
 
-api_key = "AIzaSyAnNsWAlOWN44IZxWeilgklmiz9YWZLnZw"
+api_key = os.getenv("GOOGLE_API_KEY")
 if not api_key:
     raise ValueError("GOOGLE_API_KEY not found in environment variables")
 
@@ -27,7 +28,7 @@ class GoalAgent:
         """
         # Load environment variables
         # change this later
-        api_key = "AIzaSyAnNsWAlOWN44IZxWeilgklmiz9YWZLnZw"
+        api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
             raise ValueError("GOOGLE_API_KEY not found in environment variables")
 

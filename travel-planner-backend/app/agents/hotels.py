@@ -2,9 +2,10 @@ import requests
 import hotel_agent
 import math
 import json
+import os
 
-API_KEY = "notWU49gJl5MUZs5Wij73gxQX0RCj9EI"
-API_SECRET = "5WGFoGbZy57N1eUp"
+API_KEY = os.getenv("AMADEUS_API_KEY")
+API_SECRET = os.getenv("AMADEUS_API_SECRET")
 
 TOKEN_CACHE = None
 

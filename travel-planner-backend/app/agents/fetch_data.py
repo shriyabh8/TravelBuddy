@@ -1,5 +1,9 @@
 import json
 import requests
+import os
+import dotenv
+
+dotenv.load_dotenv()
 
 # Get user input here to get the location (testing purposes
 
@@ -13,7 +17,7 @@ def get_input():
 # integrating opencage geocoder api to find the latitude and longitude of any given location
 
 def get_lat_lng_opencage(location):
-    api_key = "39532b63c96d4dd8859e749b66c18ba0"
+    api_key = os.getenv("ORS_API_KEY")
     url = "https://api.opencagedata.com/geocode/v1/json"
     params = {
         "q": location,
@@ -58,8 +62,8 @@ def get_tours_and_activities(access_token: str, latitude: float, longitude: floa
 
 def get_data(latitude, longitude, radius):
     """Gets and returns all the data of the activities in a given location."""
-    client_id = "notWU49gJl5MUZs5Wij73gxQX0RCj9EI"
-    client_secret = "5WGFoGbZy57N1eUp"
+    client_id = os.getenv("AMADEUS_API_KEY")
+    client_secret = os.getenv("AMADEUS_API_SECRET")
 
     access_token = get_access_token(client_id, client_secret)
 

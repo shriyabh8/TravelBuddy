@@ -101,7 +101,6 @@ def fetch_osm_places(lat: float, lon: float, radius: int = 5000, kinds: Optional
     query = build_overpass_query(lat, lon, radius, kinds)
     try:
         result = api.query(query)
-        
         places = []
         for node in result.nodes:
             place = {
@@ -147,22 +146,3 @@ def fetch_places(location: str, kinds: Optional[List[str]] = None) -> List[Dict[
     )
     
     return places
-
-
-if __name__ == "__main__":
-    # Test with Paris and multiple categories
-    print("Fetching places for Paris...")
-    places = fetch_places("San Ramon", kinds=["outdoors"])
-    print(f"\nFound {len(places)} places\n")
-    
-    # Display first 5 places with formatted output
-    for place in places[:20]:
-        print(f"Name: {place['name']}")
-        print(f"Type: {place['type']}")
-        print(f"Location: {place['location']}")
-        if place['description']:
-            print(f"Description: {place['description']}")
-        print("Tags:")
-        for key, value in place['tags']:
-            print(f"  {key}={value}")
-        print("-" * 50)
