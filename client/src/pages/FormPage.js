@@ -11,7 +11,7 @@ function FormPage() {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  const today = new Date(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -82,8 +82,6 @@ function FormPage() {
 
         </div>
 
-        
-
         <div>
           <label htmlFor="start-date">Start Date:</label>
           <DatePicker
@@ -93,6 +91,7 @@ function FormPage() {
             selectsStart
             startDate={startDate}
             endDate={endDate}
+            minDate={today}
             dateFormat="MM/dd/yyyy"
             className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans mr-2 ml-3"
             placeholderText="Start Date"
@@ -106,7 +105,7 @@ function FormPage() {
             selectsEnd
             startDate={startDate}
             endDate={endDate}
-            minDate={startDate}
+            minDate={startDate || today}
             dateFormat="MM/dd/yyyy"
             className="p-2 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans ml-3"
             placeholderText="End Date"

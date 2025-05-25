@@ -54,21 +54,16 @@ app.post('/itinerary-submit', async (req, res) => {
 
   app.get('/itinerary-data', async (req, res) => {
     try {
-      // Run the Python script that reads form-data.txt and writes itinerary-data.txt
       await execPromise('python3 listener.py');
   
-      // After python finishes, read itinerary-data.txt
       const fileData = await fs.readFile('itinerary-data.txt', 'utf8');
-      const lines = fileData.split('\n').filter(Boolean);
-      const jsonObjects = lines.map((line, index) => {
-        try {
-          return JSON.parse(line);
-        } catch {
-          return { error: `Invalid JSON on line ${index + 1}`, raw: line };
-        }
-      });
-  
-      res.json(jsonObjects);
+
+      try {
+        const jsonData = JSON.parse(fileData);
+        res.json(jsonData);
+      } catch {
+        res.status(400).json({ error: 'Invalid JSON' });
+      }
   
     } catch (error) {
       console.error(error);

@@ -10,7 +10,7 @@ const Itinerary = ({itinerary_key}) => {
       try {
         const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
-        const item = data[itinerary_key];
+        const item = data[String(itinerary_key)];
         setAllData(item ? [item] : []);
       } catch (error) {
         console.error("Error fetching data:", error);
