@@ -6,15 +6,17 @@ const Itinerary = ({itinerary_key}) => {
   const [allData, setAllData] = useState([]);
   const [showTextbox, setShowTextbox] = useState(false);
   const [input, setInput] = useState('');
+  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Itinerary key:", itinerary_key);
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/itinerary-data");
+        const res = await fetch("http://localhost:5001/generate_itinerary/" + itinerary_key);
         const data = await res.json();
-        const item = data[String(itinerary_key)];
-        setAllData(item ? [item] : []);
+        console.log('Form data received:', data);
+        setAllData([data]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -41,7 +43,7 @@ const Itinerary = ({itinerary_key}) => {
     const formData = {input: input};
 
     try {
-      const response = await fetch('http://localhost:3000/submit', {
+      const response = await fetch('http://localhost:5001/chatbot/' + itinerary_key, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,11 +51,10 @@ const Itinerary = ({itinerary_key}) => {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      
       const result = await response.json();
       console.log('Submission successful:', result);
+      setCount(count + 1);
 
       setInput(''); 
       setShowTextbox(false);
@@ -66,13 +67,21 @@ const Itinerary = ({itinerary_key}) => {
     if (!obj) return null;
     return Object.entries(obj).map(([key, value]) => {
       const strVal = String(value);
+      // Split the string by newlines and map to React elements
+      const formattedValue = strVal.split('\n').map((line, i) => (
+        <React.Fragment key={i}>
+          {line}
+          {i < strVal.split('\n').length - 1 && <br />}
+        </React.Fragment>
+      ));
+      
       return (
-        <div className={!reFormat ? "min-w-[300px] max-w-[350px] bg-gray-50 rounded-xl shadow-md p-6 border border-gray-100 mb-7" : "w-full max-w-full bg-gray-50 rounded-xl shadow-md p-6 border border-gray-100 mb-7"}
+        <div className={!reFormat ? "w-[450px] bg-gray-50 rounded-xl shadow-md p-6 border border-gray-100 mb-7" : "w-full max-w-full bg-gray-50 rounded-xl shadow-md p-6 border border-gray-100 mb-7"}
              style={{minHeight: '300px'}}
         >
           <div className="mb-4 text-lg">
             <strong className="capitalize text-[#36a2a4] font-open-sans">{key}:</strong> 
-            <p>{strVal}</p>
+            <p className="whitespace-pre-line mt-2">{formattedValue}</p>
           </div> 
         </div>
       );

@@ -1,8 +1,11 @@
 import requests
-import hotel_agent
+from . import hotel_agent
 import math
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 API_KEY = os.getenv("AMADEUS_API_KEY")
 API_SECRET = os.getenv("AMADEUS_API_SECRET")

@@ -7,6 +7,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from .agents.trip_planner_agent import TripPlannerAgent
 from .agents.make_itinerary import make_itinerary
+from .agents.chatbot import edit_itinerary
+import random
+
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,7 +19,14 @@ logger = logging.getLogger(__name__)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3001"])
+# Configure CORS with additional options
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000", "http://127.0.0.1:3000"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 trip_planner = TripPlannerAgent()
 
@@ -29,44 +40,6 @@ def index():
         "endpoints": ["/submit_trip_data (POST)", "/generate_itinerary (GET)"]
     })
 
-def format(data):
-    data = make_itinerary(data)
-    def choose_one_flight_and_hotel():
-        chosen_flight = random.choice(data['flight_depart']['Offers'])
-        
-        chosen_hotel = random.choice(data['hotel_data'])
-        
-        output = {}
-
-        flight_data = ""
-        flight_data += data['flight_depart']['Flight offer'].strip()
-        flight_data += f"\nPrice: {chosen_flight['Price']}"
-        flight_data += "\nSegments:"
-        for segment in chosen_flight['Segments']:
-            flight_data += f"\n  - {segment}"
-
-        output['Flights'] = flight_data
-
-        hotel_data = ""
-        hotel_data += f"\nName: {chosen_hotel['name']}"
-        hotel_data += f"\nPrice per night: ${chosen_hotel['price']}"
-        hotel_data += f"\nDistance from airport: {chosen_hotel['Distance from Airport']:.2f} km"
-        
-        output['Hotels'] = hotel_data
-        print(output)
-        return output
-
-    
-    try:
-        full_data = {
-            "1": choose_one_flight_and_hotel(),
-            "2": choose_one_flight_and_hotel(),
-            "3": choose_one_flight_and_hotel()
-        }
-        return full_data
-    except Exception as e:
-        print(f"Error processing write data: {e}")
-
 @app.route('/submit_trip_data', methods=['POST'])
 def submit_trip_data():
     try:
@@ -77,44 +50,70 @@ def submit_trip_data():
         required = ['start_date', 'end_date', 'from', 'to', 'additionalInfo', 'people']
         if not all(field in data for field in required):
             return jsonify({"error": "Missing required fields"}), 400
-
-        key = f"{data['to']}-{data['start_date']}"
-        trip_data_store[key] = data
-
-        logger.info(f"Stored trip under key: {key}")
-        return jsonify({"message": "Trip data stored", "key": key})
+        
+        print("this is the data", data)
+        # Use global keyword to modify the global variable
+        global trip_data_store
+        # Generate itinerary and store it with a key
+        itinerary_data = make_itinerary(data)
+        trip_data_store["here"] = itinerary_data
+        print("this is the trip data store 1", trip_data_store)
+        
+        return jsonify({"message": "Trip data stored"})
     except Exception as e:
         logger.error(f"Error in /submit_trip_data: {str(e)}")
         return jsonify({"error": str(e)}), 500
+    
 
-@app.route('/generate_itinerary/<key>', methods=['GET'])
-def generate_itinerary(key):
+@app.route('/generate_itinerary/<itinerary_key>', methods=['GET'])
+def generate_itinerary(itinerary_key):
     try:
-        if not key or key not in trip_data_store:
-            return jsonify({"error": "Missing or invalid key"}), 400
+        # logger.info(f"Available data: {trip_data_store}")
 
-        data = format(trip_data_store)[key]
-        logger.info(data)
+        # logger.info(format(trip_data_store)[key])
 
-        # Get dates from data - they should already be in YYYY-MM-DD format
-        start_date = data['start_date']
-        end_date = data['end_date']
-        duration = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days
+        # Format the data using make_itinerary
+        # # Get dates from data - they should already be in YYYY-MM-DD format
+        # start_date = data['start_date']
+        # end_date = data['end_date']
+        # duration = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days
 
+        # # Log the trip plan
+        # logger.info(f"Generated trip plan for {data['to']}")
+
+        # # formatted = trip_planner.format_itinerary(trip)
+        #"{"paris-2025-05-26T07:00:00.000Z": {"from": "milan", "to": "paris", "start_date": "2025-05-26T07:00:00.000Z", "end_date": "2025-05-30T07:00:00.000Z", "people": "3", "additionalInfo": "sdfghjk"}}"
         
-        
+        # itinerary=make_itinerary(trip_data_store["here"])
+        # {'from': 'milan', 'to': 'paris', 'start_date': '2025-05-26T07:00:00.000Z', 'end_date': '2025-05-30T07:00:00.000Z', 'people': '3', 'additionalInfo': 'asdfghjk'}
+        # data = {'from': 'milan', 'to': 'paris', 'start_date': '2025-05-26T07:00:00.000Z', 'end_date': '2025-05-30T07:00:00.000Z', 'people': '3', 'additionalInfo': 'asdfghjk'}
 
-        # Log the trip plan
-        logger.info(f"Generated trip plan for {data['to']}")
+        # start_date = datetime.fromisoformat(data['start_date'][:-1] + '+00:00')
+        # end_date = datetime.fromisoformat(data['end_date'][:-1] + '+00:00')
 
-        formatted = trip_planner.format_itinerary(trip)
-        return jsonify(formatted)
+        # # Calculate duration in days
+        # duration = (end_date - start_date).days
+        # trip = planner.plan_trip(
+        #     user_input=user_input['from'] + " " + user_input['additionalInfo'],
+        #     destination=user_input['to'],
+        #     start_date=start_date.strftime("%Y-%m-%d"),
+        #     duration=duration
+        #     )
 
+        # ItineraryAgent().generate_itinerary(duration, datetime.fromisoformat(data['start_date'][:-1] + '+00:00'), [], [], {}, [])
+        return jsonify(trip_data_store["here"][itinerary_key])
     except ValueError:
         return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
     except Exception as e:
         logger.error(f"Error in /generate_itinerary: {str(e)}")
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/chatbot/<itinerary_key>', methods=['POST'])
+def chatbot_edit(itinerary_key):
+    print("this is before", trip_data_store["here"])
+    trip_data_store["here"][itinerary_key]=json.loads(edit_itinerary(trip_data_store["here"][itinerary_key], json.dumps(request.get_json()), []))
+    print("this is  after the edit", trip_data_store["here"])
+    return jsonify({"message": "Chatbot response generated"})
 
 
 if __name__ == '__main__':

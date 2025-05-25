@@ -9,8 +9,8 @@ function FormPage() {
   const [to, setTo] = useState('');
   const [people, setPeople] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [start_date, setstart_date] = useState(null);
+  const [end_date, setend_date] = useState(null);
   const today = new Date();
   const navigate = useNavigate();
 
@@ -18,27 +18,29 @@ function FormPage() {
     e.preventDefault();
 
     // Validate form data
-    if (!from || !to || !startDate || !endDate) {
+    if (!from || !to || !start_date || !end_date) {
       alert('Please fill in all required fields');
       return;
     }
 
     // Format dates
     // Validate form data
-    if (!from || !to || !startDate || !endDate || !people) {
+    if (!from || !to || !start_date || !end_date || !people) {
       alert('Please fill in all required fields');
       return;
     }
 
     // Format dates
-    const formattedStartDate = startDate.toISOString().split('T')[0];
-      const formattedEndDate = endDate.toISOString().split('T')[0];
+    const formattedstart_date = start_date.toISOString().split('T')[0];
+      const formattedend_date = end_date.toISOString().split('T')[0];
 
     const formData = {
       from,
       to,
-      start_date: formattedStartDate,
-      end_date: formattedEndDate,
+      start_date: formattedstart_date,
+      end_date: formattedend_date,
+      start_date: start_date,
+      end_date: end_date,
       people,
       additionalInfo,
     };
@@ -63,32 +65,11 @@ function FormPage() {
 
         const result = await response.json();
         console.log('Server response:', result);
-        
-        if (result.key) {
-          // Store the key in localStorage for later use
-          localStorage.setItem("itinerary_key", result.key);
-          navigate('/previews');
-        } else {
-          throw new Error('Invalid response from server');
-        }
+        navigate('/previews');
       } catch (error) {
         console.error('Error details:', error);
         alert('Error submitting form: ' + error.message);
       }
-
-      // Save the key for itinerary fetch later
-      // Save form data in localStorage
-      localStorage.setItem("trip_form_data", JSON.stringify({
-        from,
-        to,
-        startDate: startDate?.toISOString(),
-        endDate: endDate?.toISOString(),
-        people,
-        additionalInfo,
-      }));
-
-      // Redirect
-      navigate('/previews');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -134,11 +115,11 @@ function FormPage() {
         <div>
           <label>Start Date:</label>
           <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            selected={start_date}
+            onChange={(date) => setstart_date(date)}
             selectsStart
-            startDate={startDate}
-            endDate={endDate}
+            start_date={start_date}
+            end_date={end_date}
             minDate={today}
             dateFormat="MM/dd/yyyy"
             className="p-2 w-55 border rounded shadow-sm focus:ring focus:border-blue-300 font-open-sans mr-4 ml-3"
@@ -147,12 +128,12 @@ function FormPage() {
 
           <label>End Date:</label>
           <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
+            selected={end_date}
+            onChange={(date) => setend_date(date)}
             selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate || today}
+            start_date={start_date}
+            end_date={end_date}
+            minDate={start_date || today}
             dateFormat="MM/dd/yyyy"
             className="p-2 border rounded ml-3"
             placeholderText="End Date (mm/dd/yyyy)"

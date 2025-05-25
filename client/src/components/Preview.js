@@ -11,8 +11,8 @@ const Preview = ({itinerary_key}) => {
       try {
         const res = await fetch("http://localhost:5001/generate_itinerary/" + itinerary_key);
         const data = await res.json();
-        const item = data[String(itinerary_key)];
-        setAllData(item ? [item] : []);
+        console.log('Form data received:', data);
+        setAllData([data]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -21,22 +21,33 @@ const Preview = ({itinerary_key}) => {
     fetchData();
   }, [itinerary_key]);
 
-  
   const renderPreview = (obj) => {
     if (!obj) return null;
-    const entries = Object.entries(obj).slice(0, 4);
+    // Filter to only show Flights and Hotels
+    const entries = Object.entries(obj).filter(([key]) => key === 'Flights' || key === 'Hotels');
     return entries.map(([key, value]) => {
       let displayValue;
       if (typeof value === "object" && value !== null) {
         const strVal = JSON.stringify(value);
-        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
+        displayValue = strVal.split('\n').map((line, i) => (
+          <React.Fragment key={i}>
+            {line}
+            {i < strVal.split('\n').length - 1 && <br />}
+          </React.Fragment>
+        ));
       } else {
         const strVal = String(value);
-        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
+        displayValue = strVal.split('\n').map((line, i) => (
+          <React.Fragment key={i}>
+            {line}
+            {i < strVal.split('\n').length - 1 && <br />}
+          </React.Fragment>
+        ));
       }
       return (
         <div key={key} className="mb-12">
-          <strong className="capitalize text-[#36a2a4] text-xl font-open-sans mb-6">{key}:</strong> {displayValue}
+          <strong className="capitalize text-[#36a2a4] text-xl font-open-sans mb-6">{key}:</strong>{' '}
+          <span className="whitespace-pre-line">{displayValue}</span>
         </div>
       );
     });

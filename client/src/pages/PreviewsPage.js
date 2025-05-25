@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import beachImage from '../assets/beach_img.jpeg';
 import Preview from '../components/Preview';
 
-function OptionsPage() {
+function PreviewsPage() {
   const navigate = useNavigate();
 
   const Regenerate = (itinerary_key) => {
@@ -34,7 +34,7 @@ function OptionsPage() {
       </div>
         
       <div className="flex flex-col items-center">
-        <Preview itinerary_key={1} />
+        <Preview  itinerary_key={1} />
         <button
         onClick={Regenerate(1)}
         className="px-6 py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-open-sans font-bold text-lg rounded-xl shadow-md transition duration-200"
@@ -44,7 +44,7 @@ function OptionsPage() {
       </div>
 
       <div className="flex flex-col items-center">
-        <Preview itinerary_key={2} />
+        <Preview  itinerary_key={2} />
         <button
         onClick={Regenerate(2)}
         className="px-6 py-3 bg-[#36a2a4] hover:bg-cyan-700 text-white font-open-sans font-bold text-lg rounded-xl shadow-md transition duration-200"
@@ -57,4 +57,4 @@ function OptionsPage() {
   );
 };
 
-export default OptionsPage;
+export default PreviewsPage;

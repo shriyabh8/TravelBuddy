@@ -142,109 +142,111 @@ class ItineraryAgent:
         return daily_activities
 
     def _schedule_meals(self, restaurants: List[POI], hotel_location: Tuple[float, float], days: int, booked_slots_per_day: List[List[Tuple[int, int]]]) -> List[List[Dict[str, Any]]]:
-        default_meal_times = {
-            "lunch": 13 * 60,
-            "dinner": 19 * 60
-        }
-        brunch_time = 11 * 60
-        fixed_breakfast_time = 8 * 60
-        daily_meals = []
-
-        for day_index in range(days):
-            day_meals = []
-            booked_slots = booked_slots_per_day[day_index]
-
-            # 🥐 Add Fixed Breakfast from 8:00–9:00 AM
-            breakfast_restaurants = [r for r in restaurants if "breakfast" in r.description.lower()]
-            breakfast_restaurant = random.choice(breakfast_restaurants) if breakfast_restaurants else random.choice(restaurants)
-
-            breakfast_info = {
-                "name": breakfast_restaurant.name + " (Fixed Breakfast)",
-                "description": breakfast_restaurant.description,
-                "location": breakfast_restaurant.location,
-                "type": breakfast_restaurant.type,
-                "tags": breakfast_restaurant.tags,
-                "price": breakfast_restaurant.price,
-                "luxury_level": breakfast_restaurant.luxury_level,
-                "osm_id": breakfast_restaurant.osm_id,
-                "osm_type": breakfast_restaurant.osm_type,
-                "relevance_score": breakfast_restaurant.relevance_score,
-                "theme_score": breakfast_restaurant.theme_score,
-                "tag_score": breakfast_restaurant.tag_score,
-                "matched_theme": breakfast_restaurant.matched_theme,
-                "start_time": fixed_breakfast_time // 60,
-                "end_time": (fixed_breakfast_time + 60) // 60,
-                "duration": 60,
-                "rating": breakfast_restaurant.rating
+        if restaurants:
+            default_meal_times = {
+                "lunch": 13 * 60,
+                "dinner": 19 * 60
             }
-            day_meals.append(breakfast_info)
-            booked_slots.append((fixed_breakfast_time, fixed_breakfast_time + 60))
+            brunch_time = 11 * 60
+            fixed_breakfast_time = 8 * 60
+            daily_meals = []
 
-            # ☕ Try brunch if available
-            brunch_restaurants = [r for r in restaurants if any(tag[1] == "brunch" for tag in r.tags)]
-            other_restaurants = [r for r in restaurants if not any(tag[1] == "brunch" for tag in r.tags)]
+            for day_index in range(days):
+                day_meals = []
+                booked_slots = booked_slots_per_day[day_index]
 
-            if brunch_restaurants:
-                brunch_restaurant = random.choice(brunch_restaurants)
-                brunch_duration = 90
-                brunch_start = self.find_nearest_available_slot(brunch_time, brunch_duration, booked_slots)
+                # 🥐 Add Fixed Breakfast from 8:00–9:00 AM
+                breakfast_restaurants = [r for r in restaurants if "breakfast" in r.description.lower()]
+                breakfast_restaurant = random.choice(breakfast_restaurants) if breakfast_restaurants else random.choice(restaurants)
 
-                if brunch_start is not None:
-                    brunch_info = {
-                        "name": brunch_restaurant.name,
-                        "description": brunch_restaurant.description,
-                        "location": brunch_restaurant.location,
-                        "type": brunch_restaurant.type,
-                        "tags": brunch_restaurant.tags,
-                        "osm_id": brunch_restaurant.osm_id,
-                        "osm_type": brunch_restaurant.osm_type,
-                        "relevance_score": brunch_restaurant.relevance_score,
-                        "theme_score": brunch_restaurant.theme_score,
-                        "tag_score": brunch_restaurant.tag_score,
-                        "matched_theme": brunch_restaurant.matched_theme,
-                        "start_time": brunch_start // 60,
-                        "end_time": (brunch_start + brunch_duration) // 60,
-                        "duration": brunch_duration,
-                        "rating": brunch_restaurant.rating
-                    }
-                    day_meals.append(brunch_info)
-                    booked_slots.append((brunch_start, brunch_start + brunch_duration))
-
-            # 🍽 Schedule lunch and dinner
-            for meal_type, target_time in default_meal_times.items():
-                if not other_restaurants:
-                    break
-
-                duration = 60
-                start_time = self.find_nearest_available_slot(target_time, duration, booked_slots)
-                if start_time is None:
-                    continue
-
-                restaurant = random.choice(other_restaurants)
-                other_restaurants.remove(restaurant)
-
-                meal_info = {
-                    "name": restaurant.name,
-                    "description": restaurant.description,
-                    "location": restaurant.location,
-                    "type": restaurant.type,
-                    "tags": restaurant.tags,
-                    "osm_id": restaurant.osm_id,
-                    "osm_type": restaurant.osm_type,
-                    "relevance_score": restaurant.relevance_score,
-                    "theme_score": restaurant.theme_score,
-                    "tag_score": restaurant.tag_score,
-                    "matched_theme": restaurant.matched_theme,
-                    "start_time": start_time // 60,
-                    "end_time": (start_time + duration) // 60,
-                    "duration": duration,
-                    "rating": restaurant.rating
+                breakfast_info = {
+                    "name": breakfast_restaurant.name + " (Fixed Breakfast)",
+                    "description": breakfast_restaurant.description,
+                    "location": breakfast_restaurant.location,
+                    "type": breakfast_restaurant.type,
+                    "tags": breakfast_restaurant.tags,
+                    "price": breakfast_restaurant.price,
+                    "luxury_level": breakfast_restaurant.luxury_level,
+                    "osm_id": breakfast_restaurant.osm_id,
+                    "osm_type": breakfast_restaurant.osm_type,
+                    "relevance_score": breakfast_restaurant.relevance_score,
+                    "theme_score": breakfast_restaurant.theme_score,
+                    "tag_score": breakfast_restaurant.tag_score,
+                    "matched_theme": breakfast_restaurant.matched_theme,
+                    "start_time": fixed_breakfast_time // 60,
+                    "end_time": (fixed_breakfast_time + 60) // 60,
+                    "duration": 60,
+                    "rating": breakfast_restaurant.rating
                 }
-                day_meals.append(meal_info)
-                booked_slots.append((start_time, start_time + duration))
+                day_meals.append(breakfast_info)
+                booked_slots.append((fixed_breakfast_time, fixed_breakfast_time + 60))
 
-            daily_meals.append(day_meals)
-        return daily_meals
+                # ☕ Try brunch if available
+                brunch_restaurants = [r for r in restaurants if any(tag[1] == "brunch" for tag in r.tags)]
+                other_restaurants = [r for r in restaurants if not any(tag[1] == "brunch" for tag in r.tags)]
+
+                if brunch_restaurants:
+                    brunch_restaurant = random.choice(brunch_restaurants)
+                    brunch_duration = 90
+                    brunch_start = self.find_nearest_available_slot(brunch_time, brunch_duration, booked_slots)
+
+                    if brunch_start is not None:
+                        brunch_info = {
+                            "name": brunch_restaurant.name,
+                            "description": brunch_restaurant.description,
+                            "location": brunch_restaurant.location,
+                            "type": brunch_restaurant.type,
+                            "tags": brunch_restaurant.tags,
+                            "osm_id": brunch_restaurant.osm_id,
+                            "osm_type": brunch_restaurant.osm_type,
+                            "relevance_score": brunch_restaurant.relevance_score,
+                            "theme_score": brunch_restaurant.theme_score,
+                            "tag_score": brunch_restaurant.tag_score,
+                            "matched_theme": brunch_restaurant.matched_theme,
+                            "start_time": brunch_start // 60,
+                            "end_time": (brunch_start + brunch_duration) // 60,
+                            "duration": brunch_duration,
+                            "rating": brunch_restaurant.rating
+                        }
+                        day_meals.append(brunch_info)
+                        booked_slots.append((brunch_start, brunch_start + brunch_duration))
+
+                # 🍽 Schedule lunch and dinner
+                for meal_type, target_time in default_meal_times.items():
+                    if not other_restaurants:
+                        break
+
+                    duration = 60
+                    start_time = self.find_nearest_available_slot(target_time, duration, booked_slots)
+                    if start_time is None:
+                        continue
+
+                    restaurant = random.choice(other_restaurants)
+                    other_restaurants.remove(restaurant)
+
+                    meal_info = {
+                        "name": restaurant.name,
+                        "description": restaurant.description,
+                        "location": restaurant.location,
+                        "type": restaurant.type,
+                        "tags": restaurant.tags,
+                        "osm_id": restaurant.osm_id,
+                        "osm_type": restaurant.osm_type,
+                        "relevance_score": restaurant.relevance_score,
+                        "theme_score": restaurant.theme_score,
+                        "tag_score": restaurant.tag_score,
+                        "matched_theme": restaurant.matched_theme,
+                        "start_time": start_time // 60,
+                        "end_time": (start_time + duration) // 60,
+                        "duration": duration,
+                        "rating": restaurant.rating
+                    }
+                    day_meals.append(meal_info)
+                    booked_slots.append((start_time, start_time + duration))
+
+                daily_meals.append(day_meals)
+            return daily_meals
+        return {day: [] for day in range(days)}
 
 
 
@@ -262,3 +264,4 @@ class ItineraryAgent:
                 if all(not overlaps(trial_start, trial_end, b[0], b[1]) for b in booked_slots):
                     return trial_start
         return None
+
