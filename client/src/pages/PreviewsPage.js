@@ -14,7 +14,7 @@ function OptionsPage() {
       <div className="w-full flex justify-start">
         <button
             onClick={() => navigate(-1)}
-            className="justify-left text-[#383a32] font-open-sans underline hover:font-bold mb-3 block"
+            className="justify-left text-[#383a32] font-open-sans hover:text-cyan-700 mb-3 block"
           >
             ← Edit Survey
           </button>
