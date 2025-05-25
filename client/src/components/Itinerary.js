@@ -10,7 +10,7 @@ const Itinerary = ({itinerary_key}) => {
       try {
         const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
-        const item = Array.isArray(data) ? data[itinerary_key] : null;
+        const item = data[itinerary_key];
         setAllData(item ? [item] : []);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -23,19 +23,11 @@ const Itinerary = ({itinerary_key}) => {
   
   const renderPreview = (obj) => {
     if (!obj) return null;
-    const entries = Object.entries(obj).slice(0, 4);
-    return entries.map(([key, value]) => {
-      let displayValue;
-      if (typeof value === "object" && value !== null) {
-        const strVal = JSON.stringify(value);
-        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
-      } else {
-        const strVal = String(value);
-        displayValue = strVal.length > 40 ? strVal.slice(0, 40) + "..." : strVal;
-      }
+    return Object.entries(obj).map(([key, value]) => {
+      const strVal = String(value);
       return (
         <div key={key} className="mb-1">
-          <strong className="capitalize text-indigo-700">{key}:</strong> {displayValue}
+          <strong className="capitalize text-indigo-700">{key}:</strong> {strVal}
         </div>
       );
     });
@@ -44,12 +36,11 @@ const Itinerary = ({itinerary_key}) => {
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <button
-    onClick={() => navigate(-1)}
+    onClick={() => navigate('/previews')}
     className="text-indigo-600 hover:underline mb-6 block"
   >
     ← Back To Previews
   </button>
-
   <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
     <h1 className="text-3xl font-bold text-gray-800 mb-6">Trip Details</h1>
       {allData.length === 0 ? (

@@ -13,7 +13,7 @@ function OptionsPage() {
     <div className="p-6 flex flex-col items-center ml-8">
       <div className="w-full flex justify-start">
         <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/form')}
             className="justify-left text-[#383a32] font-open-sans underline hover:font-bold mb-3 block"
           >
             ← Edit Survey
