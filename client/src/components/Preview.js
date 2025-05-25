@@ -10,7 +10,7 @@ const Preview = ({itinerary_key}) => {
       try {
         const res = await fetch("http://localhost:3000/itinerary-data");
         const data = await res.json();
-        const item = Array.isArray(data) ? data[itinerary_key] : null;
+        const item = data[String(itinerary_key)];
         setAllData(item ? [item] : []);
       } catch (error) {
         console.error("Error fetching data:", error);

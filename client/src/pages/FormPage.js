@@ -11,9 +11,7 @@ function FormPage() {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const today = new Date(); // Get today's date
-  // today.setHours(0, 0, 0, 0); // Set time to beginning of day for accurate comparison
-
+  const today = new Date(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

@@ -1,3 +1,5 @@
-{"location": "1", "dates": "2", "people": "3", "additionalInfo": "4"}
-{"location": "5", "dates": "6", "people": "7", "additionalInfo": "8"}
-{"location": "9", "dates": "0", "people": "1", "additionalInfo": "2"}
+{
+  "1": {"Flights": "Depart from SFO to LHR on 2025-06-16:\nPrice: $431.66\nSegments:\n  - Flight TP238: SFO at 2025-06-16T16:20:00 -> LIS at 2025-06-17T11:35:00\n  - Flight TP1350: LIS at 2025-06-17T15:00:00 -> LHR at 2025-06-17T17:45:00", "Hotels": "\nName: PREMIER INN HEATHROW AIRPORT\nPrice per night: $248\nDistance from airport: 1.53 km"}
+, "0": {"Flights": "...", "Hotels": "..."}
+, "2": {"Flights": "...", "Hotels": "..."}
+}
