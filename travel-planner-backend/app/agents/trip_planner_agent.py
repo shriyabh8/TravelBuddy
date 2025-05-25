@@ -25,25 +25,25 @@ class TripPlannerAgent:
         self.itinerary_agent = ItineraryAgent()
 
         self.mock_hotel = {
-            "name": "The Ritz-Carlton San Francisco",
-            "location": (37.7896, -122.4073),  # Coordinates for Nob Hill
-            "rating": 5.0,
-            "address": "600 Stockton St, San Francisco, CA 94108, USA",
-            "amenities": [
-                "Free WiFi", "24-hour front desk", "Restaurant", "Bar",
-                "Spa", "Fitness center", "Indoor pool", "Airport shuttle",
-                "Business center", "Meeting rooms", "Concierge service",
-                "Luxury suites", "Butler service", "Valet parking",
-                "Executive lounge", "Complimentary breakfast",
-                "In-room dining", "Pet-friendly"
-            ],
-            "price": 550.00,
-            "currency": "USD"
+        "name": "Shangri-La Paris",
+        "location": (48.8647, 2.2938),  # Coordinates for Eiffel Tower area
+        "rating": 5.0,
+        "address": "10 Avenue d'Iéna, 75116 Paris, France",
+        "amenities": [
+            "Free WiFi", "24-hour front desk", "Restaurant", "Bar",
+            "Spa", "Fitness center", "Indoor pool", "Airport shuttle",
+            "Business center", "Meeting rooms", "Concierge service",
+            "Luxury suites", "Butler service", "Valet parking",
+            "Executive lounge", "Complimentary breakfast",
+            "In-room dining", "Pet-friendly", "Eiffel Tower view"
+        ],
+        "price": 750.00,
+        "currency": "EUR"
         }
 
     def plan_trip(self, user_input: str, destination: str, start_date: str, duration: int) -> Dict[str, Any]:
         preferences = self.goal_agent.extract(user_input)
-
+        print(preferences)
         food_tags = [["amenity", "restaurant"], ["amenity", "cafe"], ["amenity", "bar"]]
         food_keys = {"restaurant", "cafe", "bar", "food", "fast_food", "pub", "bistro", "diner"}
 
@@ -155,6 +155,8 @@ def format_itinerary(trip_data):
         # Format activities
         for activity in day['activities']:
             website = get_website(activity.get('tags', []))
+        
+            
             formatted_activity = {
                 "name": activity['name'],
                 "price": activity.get('price', 'Free'),
@@ -170,6 +172,7 @@ def format_itinerary(trip_data):
         # Format meals
         for meal in day['meals']:
             website = get_website(meal.get('tags', []))
+            
             formatted_meal = {
                 "name": meal['name'],
                 "price": meal.get('price', 'Free'),
@@ -190,8 +193,8 @@ def main():
     
     # Example trip planning
     trip = planner.plan_trip(
-        user_input="I want to go to SFO and explore the city.",
-        destination="San Francisco, CA",
+        user_input="I want to go to Paris and go to museums.",
+        destination="Paris, France",
         start_date="2025-05-25",
         duration=3
     )
@@ -200,6 +203,7 @@ def main():
 
     json_trip = json.dumps(trip, cls=DateTimeEncoder)
     print(json_trip)
+    return json_trip
 
 if __name__ == '__main__':
     main()
