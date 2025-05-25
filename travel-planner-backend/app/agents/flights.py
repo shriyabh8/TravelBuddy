@@ -1,7 +1,11 @@
 import requests
+import os
+import dotenv
 
-API_KEY = "notWU49gJl5MUZs5Wij73gxQX0RCj9EI"
-API_SECRET = "5WGFoGbZy57N1eUp"
+dotenv.load_dotenv()
+
+API_KEY = os.getenv("AMADEUS_API_KEY")
+API_SECRET = os.getenv("AMADEUS_API_SECRET")
 
 def get_access_token(api_key, api_secret):
     url = "https://test.api.amadeus.com/v1/security/oauth2/token"
